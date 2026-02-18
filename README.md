@@ -53,7 +53,7 @@ Ridge's small optimal alpha (0.1) confirms multicollinearity is not the primary 
 
 ```
 ├── energy_efficiency_analysis.ipynb    # Main analysis notebook
-├── ENB2012_data.xlsx                   # Dataset (UCI ML Repository)
+├── ENB2012_data.csv                    # Dataset (UCI ML Repository)
 ├── README.md                           # This file
 └── requirements.txt                    # Python dependencies
 ```
@@ -133,7 +133,7 @@ DOI: 10.1016/j.enbuild.2012.03.003
 
 ## 📧 Contact
 
-**Beenish Jahan** | [LinkedIn](www.linkedin.com/in/beenishjahan) | [Email](beenishjahan2003@gmail.com)
+**Beenish Jahan** | [LinkedIn]([LinkedIn](https://www.linkedin.com/in/beenishjahan)) | [Email]([Email](mailto:beenishjahan2003@gmail.com))
 
 ⭐ If you found this project helpful, please consider starring the repository!
 
