@@ -9,9 +9,11 @@
 
 ## 📋 Project Overview
 
-Independent reproduction and verification of **Tsanas & Xifara (2012)** research on predicting building heating loads using machine learning. This project validates key research findings through modern ML implementation and extends the methodology with Ridge Regression.
+Independent reproduction and verification of **Tsanas & Xifara (2012)** research on predicting building heating loads using machine learning. This project validates key research findings through modern ML implementation — starting with a linear baseline and progressively extending to ensemble methods.
 
-**Status:** ✅ Phase 1 Complete | 🔄 Phase 2 (Random Forest) Coming Soon
+**Workflow:** Phase 1 (OLS Linear Regression + Ridge) → Phase 2 (Random Forest)
+
+**Status:** ✅ Phase 1 Complete | ✅ Phase 2 Complete
 
 ---
 
@@ -23,40 +25,41 @@ Independent reproduction and verification of **Tsanas & Xifara (2012)** research
 | Multicollinearity in structural features | ✅ Verified | RC↔SA: -0.99, OH↔RA: -0.97 |
 | Linear regression shows mediocre results | ✅ Verified | RMSE ~2.89 kWh (comparable to paper's ~3.14) |
 | Ridge improves stability, not accuracy | ✅ Verified | Minimal metric improvement (0.0002 kWh) |
+| Non-linearity is the primary limitation | ✅ Verified | Random Forest RMSE dropped to 0.51 kWh |
 
-**Conclusion:** All findings independently reproduced. Non-linearity confirmed as primary limitation.
+**Conclusion:** All findings independently reproduced. Non-linearity confirmed and addressed.
 
 ---
 
 ## 📊 Model Results
 
-| Model | R² Score | RMSE (kWh) | MAE (kWh) | Key Insight |
-|-------|----------|-----------|----------|-------------|
-| **Linear Regression** | 0.9178 | 2.8876 | 2.1019 | Baseline performance |
-| **Ridge (α=0.1)** | 0.9178 | 2.8874 | 2.1017 | Stabilized coefficients, minimal prediction improvement |
+| Phase | Model | R² Score | RMSE (kWh) | MAE (kWh) | Key Insight |
+|-------|-------|----------|-----------|----------|-------------|
+| **Phase 1** | Linear Regression (OLS) | 0.9178 | 2.8876 | 2.1019 | Baseline performance |
+| **Phase 1** | Ridge (α=0.1) | 0.9178 | 2.8874 | 2.1017 | Stabilized coefficients, minimal improvement |
+| **Phase 2** | Random Forest | 0.9974 | 0.5103 | — | Captures non-linearity, near-perfect fit |
 
-Ridge's small optimal alpha (0.1) confirms multicollinearity is not the primary limitation — non-linearity is.
-
----
-
-## 🛠️ Tech Stack
-
-- **Language:** Python 3.8+
-- **Libraries:** pandas, numpy, matplotlib, seaborn, scikit-learn
-- **Models:** LinearRegression, RidgeCV
-- **Preprocessing:** StandardScaler, OneHotEncoder
-- **Environment:** Jupyter Notebook
+> Ridge's small optimal alpha (0.1) confirmed multicollinearity was not the primary limitation — non-linearity was. Random Forest proved this by cutting RMSE by ~82%.
 
 ---
 
-## 📁 Repository Structure
+## 🔬 Methodology
 
-```
-├── energy_efficiency_analysis.ipynb    # Main analysis notebook
-├── ENB2012_data.csv                    # Dataset (UCI ML Repository)
-├── README.md                           # This file
-└── requirements.txt                    # Python dependencies
-```
+This project was built in two phases, intentionally starting simple:
+
+### Phase 1 — Linear Baseline
+1. **Exploratory Data Analysis** → Identified bimodal distribution, multicollinearity
+2. **Preprocessing** → One-hot encoding, StandardScaler
+3. **OLS Linear Regression** → Established performance baseline
+4. **Ridge Regression** → Tested regularization via RidgeCV (5-fold CV)
+5. **Verification** → Compared results to paper's IRLS findings
+
+### Phase 2 — Ensemble Model
+6. **Reused the exact same train/test split** from Phase 1 (saved as `.npy` files) to ensure a fair comparison
+7. **Random Forest Regressor** → Captured non-linear relationships linear models could not
+8. **Evaluation** → Compared all models head-to-head
+
+**Note:** This project uses OLS (sklearn) rather than IRLS (paper's method). Despite methodological differences, findings align closely.
 
 ---
 
@@ -70,6 +73,30 @@ Ridge's small optimal alpha (0.1) confirms multicollinearity is not the primary 
 
 ---
 
+## 🛠️ Tech Stack
+
+- **Language:** Python 3.8+
+- **Libraries:** pandas, numpy, matplotlib, seaborn, scikit-learn
+- **Models:** LinearRegression, RidgeCV, RandomForestRegressor
+- **Preprocessing:** StandardScaler, OneHotEncoder
+- **Environment:** Jupyter Notebook
+
+---
+
+## 📁 Repository Structure
+
+```
+├── model.ipynb              # Phase 1 — OLS + Ridge Regression
+├── ensemble_mod...          # Phase 2 — Random Forest
+├── data_energy.csv          # Dataset (UCI ML Repository)
+├── requirements.txt         # Python dependencies
+├── .gitignore               
+├── LICENSE                  
+└── README.md
+```
+
+---
+
 ## 🚀 Quick Start
 
 ```bash
@@ -79,21 +106,14 @@ git clone https://github.com/BeenishJahan/Linear_Regression.git
 # Install dependencies
 pip install -r requirements.txt
 
-# Open notebook
-jupyter notebook model.ipynb
+# Run Phase 1 first (generates the train/test split)
+jupyter notebook Linear_Regression/model.ipynb
+
+# Then run Phase 2
+jupyter notebook ensemble_model/random_forest.ipynb
 ```
 
----
-
-## 🔬 Methodology
-
-1. **Exploratory Data Analysis** → Identified bimodal distribution, multicollinearity
-2. **Preprocessing** → One-hot encoding, StandardScaler
-3. **Baseline Model** → Linear Regression (OLS)
-4. **Regularization** → RidgeCV with 5-fold cross-validation
-5. **Verification** → Compared results to paper's IRLS findings
-
-**Note:** This project uses OLS (sklearn) rather than IRLS (paper's method). Despite methodological differences, findings align.
+> ⚠️ Run Phase 1 before Phase 2 — the Random Forest notebook loads the preprocessed train/test split saved by the linear regression notebook.
 
 ---
 
@@ -109,13 +129,10 @@ jupyter notebook model.ipynb
 
 ---
 
-## 🔮 Future Work (Phase 2)
+## 🔮 Future Work
 
-Implement Random Forest to:
-- Verify paper's claim of **3x performance improvement** (target: RMSE ~1.01 kWh)
-- Capture non-linear relationships linear models miss
-- Compare feature importance (RF vs linear coefficients)
-- Complete full research reproduction study
+- Hyperparameter tuning for Random Forest (grid search / random search)
+- Compare feature importance: Random Forest vs linear coefficients
 
 ---
 
@@ -133,7 +150,7 @@ DOI: 10.1016/j.enbuild.2012.03.003
 
 ## 📧 Contact
 
-**Beenish Jahan** | [LinkedIn]([LinkedIn](https://www.linkedin.com/in/beenishjahan)) | [Email]([Email](mailto:beenishjahan2003@gmail.com))
+**Beenish Jahan** | [LinkedIn](https://www.linkedin.com/in/beenishjahan) | [Email](mailto:beenishjahan2003@gmail.com)
 
 ⭐ If you found this project helpful, please consider starring the repository!
 
