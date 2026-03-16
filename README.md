@@ -148,11 +148,12 @@ DOI: 10.1016/j.enbuild.2012.03.003
 
 ---
 
-## 📧 Contact
+**📧 Contact**
 
-**Beenish Jahan** | [LinkedIn](https://www.linkedin.com/in/beenishjahan) | [Email](mailto:beenishjahan2003@gmail.com)
+**Beenish Jahan**
 
-⭐ If you found this project helpful, please consider starring the repository!
+🔗 [LinkedIn](https://www.linkedin.com/in/beenishjahan)  
+📧 [beenishjahan2003@gmail.com](mailto:beenishjahan2003@gmail.com)
 
 ---
 
